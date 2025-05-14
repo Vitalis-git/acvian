@@ -1,19 +1,17 @@
 from fastapi import FastAPI
-from supabase import create_client, Client
-import os
+import uvicorn 
+import requests
 
 app = FastAPI()
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
-
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @app.get("/")
-def read_root():
-    return {"message": "FastAPI is running"}
+async def root():
+    return {"message": "Hello World"}
 
-@app.get("/users")
-def get_users():
-    result = supabase.table("users").select("*").execute()
-    return result.data
+@app.get("/test")
+def fetch_html(url: str) -> str:
+    url = "http://" + url
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.text
