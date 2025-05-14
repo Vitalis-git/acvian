@@ -15,3 +15,6 @@ def fetch_html(url: str) -> str:
     response = requests.get(url)
     response.raise_for_status()
     return response.text
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
